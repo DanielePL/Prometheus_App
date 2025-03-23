@@ -798,74 +798,68 @@
         </div>
     </div>
     <script>
-        // Warten bis das Dokument vollständig geladen ist
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentSlide = 1;
-            const totalSlides = 10;
-            const prevButton = document.getElementById('prevBtn');
-            const nextButton = document.getElementById('nextBtn');
-            const slideCounter = document.getElementById('slideCounter');
-            
-            // Überprüfe, ob die Elemente existieren
-            if (!prevButton || !nextButton || !slideCounter) {
-                console.error("Navigation elements not found!");
-                return;
+    // Einfacher Code, der mit weniger Abhängigkeiten arbeitet
+    document.addEventListener('DOMContentLoaded', function() {
+        var slides = document.querySelectorAll('.slide');
+        var currentSlideIndex = 0;
+        var slideCounter = document.getElementById('slideCounter');
+        var prevBtn = document.getElementById('prevBtn');
+        var nextBtn = document.getElementById('nextBtn');
+        
+        // Aktualisiere den Slide-Zähler
+        function updateCounter() {
+            if (slideCounter) {
+                slideCounter.textContent = (currentSlideIndex + 1) + ' / ' + slides.length;
             }
-            
-            function updateSlideCounter() {
-                slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
-            }
-            
-            function showSlide(slideNumber) {
-                // Hide all slides
-                document.querySelectorAll('.slide').forEach(slide => {
-                    slide.classList.remove('active');
-                });
-                
-                // Show the current slide
-                const targetSlide = document.getElementById(`slide${slideNumber}`);
-                if (targetSlide) {
-                    targetSlide.classList.add('active');
+        }
+        
+        // Zeige den aktuellen Slide an und verstecke die anderen
+        function showCurrentSlide() {
+            slides.forEach(function(slide, index) {
+                if (index === currentSlideIndex) {
+                    slide.classList.add('active');
                 } else {
-                    console.error(`Slide #${slideNumber} not found!`);
-                }
-                
-                // Update counter
-                updateSlideCounter();
-            }
-            
-            function nextSlide() {
-                if (currentSlide < totalSlides) {
-                    currentSlide++;
-                    showSlide(currentSlide);
-                }
-            }
-            
-            function prevSlide() {
-                if (currentSlide > 1) {
-                    currentSlide--;
-                    showSlide(currentSlide);
-                }
-            }
-            
-            // Event listeners
-            prevButton.addEventListener('click', prevSlide);
-            nextButton.addEventListener('click', nextSlide);
-            
-            // Keyboard navigation
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'ArrowRight') {
-                    nextSlide();
-                } else if (event.key === 'ArrowLeft') {
-                    prevSlide();
+                    slide.classList.remove('active');
                 }
             });
-            
-            // Initialize
-            updateSlideCounter();
-            showSlide(1);
-        });
-    </script>
+            updateCounter();
+        }
+        
+        // Vorwärts-Button
+        if (nextBtn) {
+            nextBtn.onclick = function() {
+                if (currentSlideIndex < slides.length - 1) {
+                    currentSlideIndex++;
+                    showCurrentSlide();
+                }
+            };
+        }
+        
+        // Rückwärts-Button
+        if (prevBtn) {
+            prevBtn.onclick = function() {
+                if (currentSlideIndex > 0) {
+                    currentSlideIndex--;
+                    showCurrentSlide();
+                }
+            };
+        }
+        
+        // Tastatur-Navigation
+        document.onkeydown = function(e) {
+            if (e.key === 'ArrowRight' && currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                showCurrentSlide();
+            } else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showCurrentSlide();
+            }
+        };
+        
+        // Initialisieren
+        updateCounter();
+    });
+</script>
 </body>
 </html>
                     
