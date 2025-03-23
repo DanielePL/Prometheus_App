@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prometheus - Vertrauliches Pitch Deck</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #111;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-icon {
+            background-color: #ff6600;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .login-box {
+            background-color: #222;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2);
+        }
+        
+        .nda-container {
+            margin-bottom: 1.5rem;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 1rem;
+            height: 150px;
+            overflow-y: scroll;
+            background-color: #333;
+            font-size: 0.9rem;
+            color: #ddd;
+            line-height: 1.4;
+        }
+        
+        .nda-container p {
+            margin-bottom: 1rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 0.8rem;
+        }
+        
+        button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #e65c00;
+        }
+        
+        button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .secure-note .icon {
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .login-box {
+                padding:
+                1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <div class="logo-text">PROMETHEUS</div>
+        </div>
+        
+        <div class="login-box">
+            <h1>Zugang zum vertraulichen Pitch Deck</h1>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email">E-Mail Adresse</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <label>Geheimhaltungsvereinbarung (NDA)</label>
+                <div class="nda-container">
+                    <p><strong>Geheimhaltungsvereinbarung</strong></p>
+                    <p>Hiermit verpflichte ich mich, alle Informationen und Unterlagen, die mir im Rahmen der Präsentation des Prometheus-Projekts zugänglich gemacht werden, streng vertraulich zu behandeln.</p>
+                    <p>Dies umfasst insbesondere:</p>
+                    <p>- Geschäftsmodell und finanzielle Kennzahlen<br>
+                    - Technische Details und Implementierungen<br>
+                    - Markteinführungsstrategien<br>
+                    - Preismodelle und Royalty-Strukturen</p>
+                    <p>Ich werde diese Informationen nicht an Dritte weitergeben, es sei denn, dies wurde ausdrücklich schriftlich genehmigt.</p>
+                    <p>Ich bin mir bewusst, dass die Verletzung dieser Vereinbarung rechtliche Konsequenzen nach sich ziehen kann und der Wert des geistigen Eigentums von Prometheus dadurch erheblich beeinträchtigt werden könnte.</p>
+                    <p>Diese Vereinbarung behält ihre Gültigkeit für einen Zeitraum von zwei Jahren ab dem heutigen Datum.</p>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="ndaAgree" required>
+                    <label for="ndaAgree">Ich habe die Geheimhaltungsvereinbarung gelesen und stimme zu</label>
+                </div>
+                
+                <button type="submit" id="loginButton" disabled>Zugang zum Pitch Deck</button>
+            </form>
+            
+            <div class="secure-note">
+                <span class="icon">🔒</span> 
+                <span>Gesicherte Verbindung | Geschützte Inhalte</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Funktion zum Überprüfen, ob alle erforderlichen Felder ausgefüllt sind
+        function checkFields() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const ndaAgree = document.getElementById('ndaAgree').checked;
+            const loginButton = document.getElementById('loginButton');
+            
+            if (email && password && ndaAgree) {
+                loginButton.disabled = false;
+            } else {
+                loginButton.disabled = true;
+            }
+        }
+        
+        // Event-Listener für Eingabefelder
+document.getElementById('email').addEventListener('input', checkFields);
+document.getElementById('password').addEventListener('input', checkFields);
+document.getElementById('ndaAgree').addEventListener('change', checkFields);
+
+// Formular-Übermittlung verarbeiten
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    // Überprüfung der Zugangsdaten
+    if (email === "Prometheusdev78@gmail.com" && password === "Prometheus2025") {
+        window.location.href = 'pitch.html'; // Weiterleitung zum Pitch-Deck
+    } else {
+        // Fehlerbehandlung - zeige eine Fehlermeldung an
+        alert("Ungültige Zugangsdaten. Bitte überprüfen Sie E-Mail und Passwort.");
+    }
+});
+    </script>
+</body>
+</html>
