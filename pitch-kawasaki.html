@@ -415,8 +415,7 @@
         }
         
         .solution-statement {
-            background-color: #ff6600;
-            background-opacity: 0.1;
+            background-color: rgba(255, 102, 0, 0.2);
             border-radius: 10px;
             padding: 25px;
             margin: 30px 0;
@@ -598,7 +597,7 @@
         <div class="slide" id="slide2">
             <h1 class="slide-title">DIE LÖSUNG: PROMETHEUS</h1>
             
-            <div class="solution-statement" style="background-color: rgba(255, 102, 0, 0.2);">
+            <div class="solution-statement">
                 <h3 style="margin-bottom: 15px;">KI-gestützte Präzisions-Coaching-Plattform</h3>
                 <p style="font-size: 1.2rem; line-height: 1.6;">Prometheus verbindet fortschrittliche Technologie und Sportwissenschaft, um jedem Kraftsportler ein personalisiertes, datenbasiertes Training zu ermöglichen.</p>
             </div>
@@ -693,17 +692,19 @@
                 </div>
                 
                 <div class="term-card" style="margin-top: 30px;">
-    <div class="term-icon">💡</div>
-    <div class="term-content">
-        <div class="term-value">Kosteneffiziente Architektur</div>
-        <div class="stat-info">
-            • On-Device-Verarbeitung: Videos und Analysen verbleiben auf Nutzergeräten<br>
-            • Cloud-Kosten: Nur Metriken und Datenpunkte werden gespeichert<br>
-            • Wartungskosten: 7.500 CHF/Jahr (Belarus-Entwicklerteam, 35 CHF/Stunde)<br>
-            • Skalierbarkeit: Kosten wachsen deutlich langsamer als Nutzerbasis und Umsatz
+                    <div class="term-icon">💡</div>
+                    <div class="term-content">
+                        <div class="term-value">Kosteneffiziente Architektur</div>
+                        <div class="stat-info">
+                            • On-Device-Verarbeitung: Videos und Analysen verbleiben auf Nutzergeräten<br>
+                            • Cloud-Kosten: Nur Metriken und Datenpunkte werden gespeichert<br>
+                            • Wartungskosten: 7.500 CHF/Jahr (Belarus-Entwicklerteam, 35 CHF/Stunde)<br>
+                            • Skalierbarkeit: Kosten wachsen deutlich langsamer als Nutzerbasis und Umsatz
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
         
         <!-- Slide 4: TECHNOLOGIE -->
         <div class="slide" id="slide4">
@@ -804,87 +805,88 @@
             <h1 class="slide-title">WETTBEWERBSANALYSE</h1>
             
             <table class="comparison-table">
-    <tr>
-        <th>Feature</th>
-        <th>Prometheus</th>
-        <th>StrongLifts</th>
-        <th>FitBod</th>
-        <th>JuggernautAI</th>
-        <th>ZING</th>
-    </tr>
-    <tr>
-        <td>VBT-Analyse</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>Bar Path-Analyse</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>Körper-Bewegungsanalyse</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-yes">✓</td>
-    </tr>
-    <tr>
-        <td>Echtzeit KI-Coaching</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>Coach-Plattform</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>Royalty-Programm</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>Ernährungs-Korrelation</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-    <tr>
-        <td>On-Device Verarbeitung</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-yes">✓</td>
-        <td class="comparison-no">✗</td>
-    </tr>
-</table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Prometheus</th>
+                    <th>StrongLifts</th>
+                    <th>FitBod</th>
+                    <th>JuggernautAI</th>
+                    <th>ZING</th>
+                </tr>
+                <tr>
+                    <td>VBT-Analyse</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>Bar Path-Analyse</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>Körper-Bewegungsanalyse</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-yes">✓</td>
+                </tr>
+                <tr>
+                    <td>Echtzeit KI-Coaching</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>Coach-Plattform</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>Royalty-Programm</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>Ernährungs-Korrelation</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+                <tr>
+                    <td>On-Device Verarbeitung</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-yes">✓</td>
+                    <td class="comparison-no">✗</td>
+                </tr>
+            </table>
 
-<div class="term-card" style="margin-top: 30px;">
-    <div class="term-icon">🏆</div>
-    <div class="term-content">
-        <div class="term-value">Alleinstellungsmerkmale</div>
-        <div class="stat-info">Einzige Plattform mit spezialisierter Bar Path-Analyse, VBT-Metriken, KI-Coaching, Coach-Plattform und Royalty-Programm. Während ZING allgemeine Körper-Bewegungsanalyse anbietet, übertrifft Prometheus mit kraftsportspezifischen Metriken, dedizierter Coach-Plattform und effizienterer On-Device Verarbeitung alle Wettbewerber.</div>
-    </div>
-</div>
+            <div class="term-card" style="margin-top: 30px;">
+                <div class="term-icon">🏆</div>
+                <div class="term-content">
+                    <div class="term-value">Alleinstellungsmerkmale</div>
+                    <div class="stat-info">Einzige Plattform mit spezialisierter Bar Path-Analyse, VBT-Metriken, KI-Coaching, Coach-Plattform und Royalty-Programm. Während ZING allgemeine Körper-Bewegungsanalyse anbietet, übertrifft Prometheus mit kraftsportspezifischen Metriken, dedizierter Coach-Plattform und effizienterer On-Device Verarbeitung alle Wettbewerber.</div>
+                </div>
+            </div>
+        </div>
         
         <!-- Slide 7: TEAM -->
         <div class="slide" id="slide7">
@@ -977,54 +979,54 @@
                 
                 <div class="column">
                     <h3 class="column-title">Investor ROI</h3>
-<table class="roi-table">
-    <thead>
-        <tr>
-            <th>Jahr</th>
-            <th>Nutzer</th>
-            <th>Umsatz</th>
-            <th>Op. Kosten</th>
-            <th>Netto</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>1.500</td>
-            <td>298.500 CHF</td>
-            <td>13.500 CHF</td>
-            <td>285.000 CHF</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>3.000</td>
-            <td>597.000 CHF</td>
-            <td>18.900 CHF</td>
-            <td>578.100 CHF</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>6.000</td>
-            <td>1.194.000 CHF</td>
-            <td>29.800 CHF</td>
-            <td>1.164.200 CHF</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>10.000</td>
-            <td>1.990.000 CHF</td>
-            <td>42.500 CHF</td>
-            <td>1.947.500 CHF</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>15.000</td>
-            <td>2.985.000 CHF</td>
-            <td>58.700 CHF</td>
-            <td>2.926.300 CHF</td>
-        </tr>
-    </tbody>
-</table>
+                    <table class="roi-table">
+                        <thead>
+                            <tr>
+                                <th>Jahr</th>
+                                <th>Nutzer</th>
+                                <th>Umsatz</th>
+                                <th>Op. Kosten</th>
+                                <th>Netto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1.500</td>
+                                <td>298.500 CHF</td>
+                                <td>13.500 CHF</td>
+                                <td>285.000 CHF</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>3.000</td>
+                                <td>597.000 CHF</td>
+                                <td>18.900 CHF</td>
+                                <td>578.100 CHF</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>6.000</td>
+                                <td>1.194.000 CHF</td>
+                                <td>29.800 CHF</td>
+                                <td>1.164.200 CHF</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>10.000</td>
+                                <td>1.990.000 CHF</td>
+                                <td>42.500 CHF</td>
+                                <td>1.947.500 CHF</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>15.000</td>
+                                <td>2.985.000 CHF</td>
+                                <td>58.700 CHF</td>
+                                <td>2.926.300 CHF</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
                     <div class="summary-cards" style="grid-template-columns: repeat(2, 1fr);">
                         <div class="summary-card">
