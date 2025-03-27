@@ -725,6 +725,7 @@
         margin-top: 15px;
     }
 
+    <style>
     .feature-item {
         font-size: 0.9rem;
         color: #ddd;
@@ -737,6 +738,22 @@
         content: "•";
         color: #ff6600;
         margin-right: 8px;
+    }
+
+    .img-container {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 10px;
+        border: 1px solid #333;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #slideCoachSoftware .img-container {
+        width: 419px;
+        height: 848px;
     }
 
     .term-card {
@@ -777,6 +794,45 @@
         line-height: 1.5;
     }
 
+    .app-showcase-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .showcase-section {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .coach-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .coach-section {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
     @media (max-width: 1200px) {
         .app-showcase-container {
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -791,6 +847,14 @@
 
         .term-icon {
             margin: 0 0 15px 0;
+        }
+
+        .coach-container {
+            grid-template-columns: 1fr;
+        }
+
+        .two-columns {
+            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -842,6 +906,64 @@
                 <div class="feature-item">Leistungsorientierte Ernährungsverfolgung</div>
                 <div class="feature-item">Datenfusion zwischen Training & Ernährung</div>
                 <div class="feature-item">Fortschrittsabhängige Anpassungen</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Separate Slide für Coach Software -->
+<div class="slide" id="slideCoachSoftware">
+    <h1 class="slide-title">COACH-SOFTWARE</h1>
+
+    <div class="showcase-intro">
+        <p>Leistungsstarkes Werkzeug für professionelle Coaches mit unbegrenztem Klientenmanagement</p>
+    </div>
+
+    <div class="coach-container">
+        <!-- Linke Spalte: Dashboard -->
+        <div class="coach-section">
+            <h3 class="section-title">Interaktives Dashboard</h3>
+            <div class="img-container">
+                <img src="images/image4.jpg" alt="Coach Dashboard" />
+            </div>
+            <div class="feature-list">
+                <div class="feature-item">KI-gestütztes Engagement-Tracking der Klienten</div>
+                <div class="feature-item">Automatische Erkennung von Interventionsbedarf</div>
+                <div class="feature-item">Leistungsbasierte Alarme und Benachrichtigungen</div>
+            </div>
+        </div>
+
+        <!-- Rechte Spalte: Klientendetails -->
+        <div class="coach-section">
+            <h3 class="section-title">Detaillierte Klientenanalyse</h3>
+            <div class="img-container">
+                <img src="images/image6.jpg" alt="Client Details" />
+            </div>
+            <div class="feature-list">
+                <div class="feature-item">Tiefgreifende Fortschrittsanalyse für jeden Klienten</div>
+                <div class="feature-item">Automatische Trainingspläne mit KI-Unterstützung</div>
+                <div class="feature-item">Sofortige Anpassung basierend auf Leistungsdaten</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-columns">
+        <div class="term-card">
+            <div class="term-icon">💰</div>
+            <div class="term-content">
+                <div class="term-value">Passives Einkommensmodell</div>
+                <div class="stat-info">
+                    Coaches verdienen eine Provision von 4 CHF pro Monat für jeden Klienten, der die App nutzt – unabhängig davon, ob aktiv betreut oder nicht.
+                </div>
+            </div>
+        </div>
+        <div class="term-card">
+            <div class="term-icon">🚀</div>
+            <div class="term-content">
+                <div class="term-value">Skalierbare Klientenverwaltung</div>
+                <div class="stat-info">
+                    Ein Jahr kostenlose Nutzung und danach flexible Optionen für 50, 100 oder 150 Klienten – mit vollem Zugriff auf alle Features.
+                </div>
             </div>
         </div>
     </div>
