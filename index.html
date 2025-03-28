@@ -179,22 +179,41 @@
     </div>
     
     <script>
-        // Funktion zum Abrufen der IP-Adresse
-        async function getIPAddress() {
+        // Funktion zum Abrufen der IP-Adresse und Standortdaten
+        async function getIPInfo() {
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
+                // Zuerst die IP-Adresse abrufen
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+                
+                // Dann Standortdaten für diese IP abrufen
+                const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
+                const geoData = await geoResponse.json();
+                
+                return {
+                    ip: ip,
+                    city: geoData.city || 'Unbekannt',
+                    region: geoData.region || 'Unbekannt',
+                    country: geoData.country_name || 'Unbekannt',
+                    org: geoData.org || 'Unbekannt'
+                };
             } catch (error) {
-                console.error('Fehler beim Abrufen der IP-Adresse:', error);
-                return 'Unbekannte IP';
+                console.error('Fehler beim Abrufen der IP-Informationen:', error);
+                return {
+                    ip: 'Unbekannte IP',
+                    city: 'Unbekannt',
+                    region: 'Unbekannt',
+                    country: 'Unbekannt',
+                    org: 'Unbekannt'
+                };
             }
         }
         
         // Funktion zum Senden einer Pushover-Benachrichtigung
         async function sendPushoverNotification(message, title) {
-            const PUSHOVER_TOKEN = "adxfbyf9ua4mw5rbs8dzsnvgvc91bs"; // Ihr Pushover App-Token
-            const PUSHOVER_USER = "uthrm412v5z5gquxv8sksq8gzmjw41"; // Ihr Pushover User-Key
+            const PUSHOVER_TOKEN = "HIER_IHREN_APP_TOKEN_EINFÜGEN"; // Ihr Pushover App-Token
+            const PUSHOVER_USER = "HIER_IHREN_USER_KEY_EINFÜGEN"; // Ihr Pushover User-Key
             
             const formData = new FormData();
             formData.append("token", PUSHOVER_TOKEN);
@@ -223,14 +242,14 @@
             const password2 = document.getElementById('password2').value;
             const errorMessage = document.getElementById('errorMessage');
             
-            // IP-Adresse abrufen
-            const ipAddress = await getIPAddress();
+            // IP-Adresse und Standort abrufen
+            const ipInfo = await getIPInfo();
             
             // Überprüfung der Zugangsdaten
             if (password1 === "Kraft" && password2 === "Vision") {
                 // Pushover-Benachrichtigung für erfolgreiche Anmeldung senden
                 await sendPushoverNotification(
-                    `Erfolgreiche Anmeldung von IP: ${ipAddress}`,
+                    `Erfolgreiche Anmeldung\nIP: ${ipInfo.ip}\nStandort: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\nOrganisation: ${ipInfo.org}`,
                     "Prometheus Login - Erfolgreich"
                 );
                 
@@ -239,7 +258,7 @@
             } else {
                 // Pushover-Benachrichtigung für fehlgeschlagene Anmeldung senden
                 await sendPushoverNotification(
-                    `Fehlgeschlagener Anmeldeversuch von IP: ${ipAddress}\nEingegebene Passwörter: ${password1}, ${password2}`,
+                    `Fehlgeschlagener Anmeldeversuch\nIP: ${ipInfo.ip}\nStandort: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\nOrganisation: ${ipInfo.org}\nEingegebene Passwörter: ${password1}, ${password2}`,
                     "Prometheus Login - Fehlgeschlagen"
                 );
                 
