@@ -179,191 +179,79 @@
     </div>
     
     <script>
-        // Funktion zum Abrufen der IP-Adresse und Standortdaten mit verbesserter Browser-Kompatibilität
-        async function getIPInfo() {
-            try {
-                // Zuerst die IP-Adresse abrufen mit Fallback-Methode
-                let ip;
-                try {
-                    const ipResponse = await fetch('https://api.ipify.org?format=json', {
-                        mode: 'cors',
-                        cache: 'no-cache'
-                    });
-                    const ipData = await ipResponse.json();
-                    ip = ipData.ip;
-                } catch (ipError) {
-                    console.error('Fehler bei ipify, versuche Alternative:', ipError);
-                    // Fallback zu einer alternativen IP-API
-                    const fallbackResponse = await fetch('https://api.ipgeolocation.io/getip', {
-                        mode: 'cors',
-                        cache: 'no-cache'
-                    });
-                    const fallbackData = await fallbackResponse.json();
-                    ip = fallbackData.ip;
-                }
-                
-                // Dann Standortdaten für diese IP abrufen mit Fallback
-                let geoData = {};
-                try {
-                    const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`, {
-                        mode: 'cors',
-                        cache: 'no-cache'
-                    });
-                    geoData = await geoResponse.json();
-                    
-                    // Prüfen ob ipapi einen Fehler zurückgegeben hat
-                    if (geoData.error) {
-                        throw new Error(geoData.reason || 'API-Limit überschritten');
-                    }
-                } catch (geoError) {
-                    console.error('Fehler bei ipapi, versuche Alternative:', geoError);
-                    // Fallback zu einer alternativen Geo-API
-                    try {
-                        const fallbackGeoResponse = await fetch(`https://ipwho.is/${ip}`, {
-                            mode: 'cors',
-                            cache: 'no-cache'
-                        });
-                        const fallbackGeoData = await fallbackGeoResponse.json();
-                        geoData = {
-                            city: fallbackGeoData.city,
-                            region: fallbackGeoData.region,
-                            country_name: fallbackGeoData.country,
-                            org: fallbackGeoData.connection.isp
-                        };
-                    } catch (fallbackGeoError) {
-                        console.error('Auch Geo-Alternative fehlgeschlagen:', fallbackGeoError);
-                    }
-                }
-                
-                // Debug-Ausgabe für Browser-Diagnose
-                console.log('IP-Info erfolgreich abgerufen:', { ip, geoData });
-                
-                return {
-                    ip: ip || 'Unbekannte IP',
-                    city: geoData.city || 'Unbekannt',
-                    region: geoData.region || 'Unbekannt',
-                    country: geoData.country_name || 'Unbekannt',
-                    org: geoData.org || 'Unbekannt'
-                };
-            } catch (error) {
-                console.error('Allgemeiner Fehler beim Abrufen der IP-Informationen:', error);
-                return {
-                    ip: 'Unbekannte IP',
-                    city: 'Unbekannt',
-                    region: 'Unbekannt',
-                    country: 'Unbekannt',
-                    org: 'Unbekannt'
-                };
-            }
-        }
+        // Variable zum Speichern des Pushover-Tokens und User-Keys
+        const PUSHOVER_TOKEN = "HIER_IHREN_APP_TOKEN_EINFÜGEN"; // Ihr Pushover App-Token
+        const PUSHOVER_USER = "HIER_IHREN_USER_KEY_EINFÜGEN"; // Ihr Pushover User-Key
         
-        // Funktion zum Senden einer Pushover-Benachrichtigung mit verbesserter Browser-Kompatibilität
-        async function sendPushoverNotification(message, title) {
-            const PUSHOVER_TOKEN = "HIER_IHREN_APP_TOKEN_EINFÜGEN"; // Ihr Pushover App-Token
-            const PUSHOVER_USER = "HIER_IHREN_USER_KEY_EINFÜGEN"; // Ihr Pushover User-Key
+        // Einfache Funktion zum Senden von Pushover-Benachrichtigungen
+        function sendPushoverNotification(message) {
+            // Erstellen der FormData
+            const formData = new FormData();
+            formData.append("token", PUSHOVER_TOKEN);
+            formData.append("user", PUSHOVER_USER);
+            formData.append("title", "Prometheus Login");
+            formData.append("message", message);
             
-            // Verwendung von XMLHttpRequest als Fallback für Fetch
-            return new Promise((resolve, reject) => {
-                try {
-                    console.log('Sende Pushover-Benachrichtigung...');
-                    
-                    // Versuche es zuerst mit Fetch API
-                    const useFetch = () => {
-                        const formData = new FormData();
-                        formData.append("token", PUSHOVER_TOKEN);
-                        formData.append("user", PUSHOVER_USER);
-                        formData.append("title", title);
-                        formData.append("message", message);
-                        
-                        fetch("https://api.pushover.net/1/messages.json", {
-                            method: "POST",
-                            body: formData,
-                            mode: 'cors',
-                            cache: 'no-cache'
-                        })
-                        .then(response => response.json())
-                        .then(result => {
-                            console.log("Pushover-Antwort (Fetch):", result);
-                            resolve(result);
-                        })
-                        .catch(fetchError => {
-                            console.error("Fetch fehlgeschlagen, versuche XMLHttpRequest:", fetchError);
-                            useXhr(); // Fallback zu XMLHttpRequest
-                        });
-                    };
-                    
-                    // Fallback mit XMLHttpRequest
-                    const useXhr = () => {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open("POST", "https://api.pushover.net/1/messages.json", true);
-                        
-                        xhr.onreadystatechange = function() {
-                            if (xhr.readyState === 4) {
-                                if (xhr.status === 200) {
-                                    try {
-                                        const result = JSON.parse(xhr.responseText);
-                                        console.log("Pushover-Antwort (XHR):", result);
-                                        resolve(result);
-                                    } catch (parseError) {
-                                        console.error("Fehler beim Parsen der XHR-Antwort:", parseError);
-                                        reject(parseError);
-                                    }
-                                } else {
-                                    console.error("XHR fehlgeschlagen mit Status:", xhr.status);
-                                    reject(new Error(`XHR Status: ${xhr.status}`));
-                                }
-                            }
-                        };
-                        
-                        const formData = new FormData();
-                        formData.append("token", PUSHOVER_TOKEN);
-                        formData.append("user", PUSHOVER_USER);
-                        formData.append("title", title);
-                        formData.append("message", message);
-                        
-                        xhr.send(formData);
-                    };
-                    
-                    // Starte mit Fetch und falle zurück auf XHR wenn nötig
-                    useFetch();
-                    
-                } catch (error) {
-                    console.error("Allgemeiner Fehler bei der Pushover-Benachrichtigung:", error);
-                    reject(error);
-                }
-            });
+            // Senden der Anfrage mit standard XHR (funktioniert in allen Browsern)
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://api.pushover.net/1/messages.json", true);
+            xhr.onload = function() {
+                console.log("Pushover-Antwort:", xhr.responseText);
+            };
+            xhr.onerror = function() {
+                console.error("Fehler bei der Pushover-Benachrichtigung");
+            };
+            xhr.send(formData);
         }
         
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        // Funktion zum Abrufen der IP-Adresse - vereinfacht
+        function getIPInfo(callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://api.ipify.org?format=json", true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        callback(data.ip);
+                    } catch (e) {
+                        callback("Unbekannte IP");
+                    }
+                } else {
+                    callback("Unbekannte IP");
+                }
+            };
+            xhr.onerror = function() {
+                callback("Unbekannte IP");
+            };
+            xhr.send();
+        }
+        
+        // Eventlistener für das Formular
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
             const password1 = document.getElementById('password1').value;
             const password2 = document.getElementById('password2').value;
             const errorMessage = document.getElementById('errorMessage');
             
-            // IP-Adresse und Standort abrufen
-            const ipInfo = await getIPInfo();
-            
-            // Überprüfung der Zugangsdaten
-            if (password1 === "Kraft" && password2 === "Vision") {
-                // Pushover-Benachrichtigung für erfolgreiche Anmeldung senden
-                await sendPushoverNotification(
-                    `Erfolgreiche Anmeldung\nIP: ${ipInfo.ip}\nStandort: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\nOrganisation: ${ipInfo.org}`,
-                    "Prometheus Login - Erfolgreich"
-                );
-                
-                // Bei erfolgreicher Authentifizierung zur Pitch-Seite weiterleiten
-                window.location.href = 'pitch.html';
-            } else {
-                // Pushover-Benachrichtigung für fehlgeschlagene Anmeldung senden
-                await sendPushoverNotification(
-                    `Fehlgeschlagener Anmeldeversuch\nIP: ${ipInfo.ip}\nStandort: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\nOrganisation: ${ipInfo.org}\nEingegebene Passwörter: ${password1}, ${password2}`,
-                    "Prometheus Login - Fehlgeschlagen"
-                );
-                
-                // Fehlermeldung anzeigen
-                errorMessage.style.display = 'block';
-            }
+            // IP-Informationen abrufen (nur die IP, ohne Geolocation)
+            getIPInfo(function(ip) {
+                // Überprüfung der Zugangsdaten
+                if (password1 === "Prometheusdev78" && password2 === "Prometheus2025") {
+                    // Pushover-Benachrichtigung senden
+                    sendPushoverNotification("Erfolgreiche Anmeldung von IP: " + ip);
+                    
+                    // Bei erfolgreicher Authentifizierung zur Pitch-Seite weiterleiten
+                    window.location.href = 'pitch.html';
+                } else {
+                    // Pushover-Benachrichtigung für fehlgeschlagenen Anmeldeversuch
+                    sendPushoverNotification("Fehlgeschlagener Anmeldeversuch von IP: " + ip + 
+                                           "\nPasswörter: " + password1 + ", " + password2);
+                    
+                    // Fehlermeldung anzeigen
+                    errorMessage.style.display = 'block';
+                }
+            });
         });
     </script>
 </body>
