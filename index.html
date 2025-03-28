@@ -179,54 +179,192 @@
     </div>
     
     <script>
-        // Variable zum Speichern des Pushover-Tokens und User-Keys
-        const PUSHOVER_TOKEN = "adxfbyf9ua4mw5rbs8dzsnvgvc91bs"; // Ihr Pushover App-Token
-        const PUSHOVER_USER = "uthrm412v5z5gquxv8sksq8gzmjw41"; // Ihr Pushover User-Key
+        // Pushover-Konfiguration - HIER IHRE ECHTEN WERTE EINTRAGEN
+        const PUSHOVER_TOKEN = "HIER_IHREN_APP_TOKEN_EINFÜGEN";
+        const PUSHOVER_USER = "HIER_IHREN_USER_KEY_EINFÜGEN";
         
-        // Einfache Funktion zum Senden von Pushover-Benachrichtigungen
-        function sendPushoverNotification(message) {
-            // Erstellen der FormData
-            const formData = new FormData();
-            formData.append("token", PUSHOVER_TOKEN);
-            formData.append("user", PUSHOVER_USER);
-            formData.append("title", "Prometheus Login");
-            formData.append("message", message);
-            
-            // Senden der Anfrage mit standard XHR (funktioniert in allen Browsern)
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://api.pushover.net/1/messages.json", true);
-            xhr.onload = function() {
-                console.log("Pushover-Antwort:", xhr.responseText);
-            };
-            xhr.onerror = function() {
-                console.error("Fehler bei der Pushover-Benachrichtigung");
-            };
-            xhr.send(formData);
+        // PHP-Skript URL - HIER IHRE ECHTE SERVER-URL EINTRAGEN
+        const NOTIFY_SCRIPT_URL = "https://ihre-domain.com/notify.php";
+        
+        // Funktion zur Browser-Erkennung
+        function getBrowserName() {
+            const agent = window.navigator.userAgent.toLowerCase();
+            switch (true) {
+                case agent.indexOf("edge") > -1: return "MS Edge";
+                case agent.indexOf("edg/") > -1: return "Edge Chromium";
+                case agent.indexOf("opr") > -1: return "Opera";
+                case agent.indexOf("chrome") > -1: return "Chrome";
+                case agent.indexOf("firefox") > -1: return "Firefox";
+                case agent.indexOf("safari") > -1: return "Safari";
+                default: return "Unbekannter Browser";
+            }
         }
         
-        // Funktion zum Abrufen der IP-Adresse - vereinfacht
-        function getIPInfo(callback) {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://api.ipify.org?format=json", true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    try {
-                        const data = JSON.parse(xhr.responseText);
-                        callback(data.ip);
-                    } catch (e) {
-                        callback("Unbekannte IP");
+        // Tracking-Pixel-Methode (funktioniert in allen Browsern)
+        function sendNotificationViaPixel(message, isSuccess) {
+            try {
+                // Erstellen eines Bild-Elements für das Tracking-Pixel
+                const pixel = document.createElement('img');
+                
+                // Parameter für das PHP-Skript
+                const params = new URLSearchParams({
+                    token: PUSHOVER_TOKEN,
+                    user: PUSHOVER_USER,
+                    message: message + " [Browser: " + getBrowserName() + "]",
+                    status: isSuccess ? 'success' : 'failure'
+                });
+                
+                // Setzen des Quellpfads zum PHP-Skript mit Parametern
+                pixel.src = NOTIFY_SCRIPT_URL + "?" + params.toString();
+                
+                // Pixel unsichtbar machen
+                pixel.style.display = 'none';
+                pixel.width = 1;
+                pixel.height = 1;
+                
+                // Zum Dokument hinzufügen
+                document.body.appendChild(pixel);
+                
+                // Nach 5 Sekunden wieder entfernen
+                setTimeout(() => {
+                    if (pixel && pixel.parentNode) {
+                        pixel.parentNode.removeChild(pixel);
                     }
-                } else {
-                    callback("Unbekannte IP");
+                }, 5000);
+                
+                console.log("Tracking-Pixel gesendet");
+                return true;
+            } catch (error) {
+                console.error("Fehler beim Senden des Tracking-Pixels:", error);
+                return false;
+            }
+        }
+        
+        // Direkte XHR-Methode (funktioniert in den meisten Browsern)
+        function sendPushoverDirect(message, title) {
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://api.pushover.net/1/messages.json', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+                const params = 
+                    'token=' + encodeURIComponent(PUSHOVER_TOKEN) +
+                    '&user=' + encodeURIComponent(PUSHOVER_USER) +
+                    '&title=' + encodeURIComponent(title) +
+                    '&message=' + encodeURIComponent(message + " [Browser: " + getBrowserName() + "]");
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        console.log("Direkte Pushover-Nachricht erfolgreich gesendet");
+                    } else {
+                        console.warn("Pushover-Fehler:", xhr.status, xhr.responseText);
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    console.error("XHR-Fehler beim Senden der Pushover-Nachricht");
+                };
+                
+                xhr.send(params);
+                return true;
+            } catch (error) {
+                console.error("Fehler beim direkten Senden an Pushover:", error);
+                return false;
+            }
+        }
+        
+        // Funktion zum Senden von Benachrichtigungen mit mehreren Methoden
+        function sendNotification(message, isSuccess) {
+            // Titel basierend auf Erfolg/Misserfolg
+            const title = isSuccess ? 'Prometheus Login - Erfolg' : 'Prometheus Login - Fehlgeschlagen';
+            
+            // Versuche beide Methoden
+            let directSuccess = false;
+            let pixelSuccess = false;
+            
+            try {
+                directSuccess = sendPushoverDirect(message, title);
+            } catch (e) {
+                console.warn("Direkte Methode fehlgeschlagen:", e);
+            }
+            
+            try {
+                pixelSuccess = sendNotificationViaPixel(message, isSuccess);
+            } catch (e) {
+                console.warn("Pixel-Methode fehlgeschlagen:", e);
+            }
+            
+            return directSuccess || pixelSuccess;
+        }
+        
+        // Funktion zum Abrufen der IP-Adresse mit mehreren Fallback-Optionen
+        function getIPAddress(callback) {
+            let ipFound = false;
+            
+            // Methode 1: ipify.org
+            const xhr1 = new XMLHttpRequest();
+            xhr1.open('GET', 'https://api.ipify.org?format=json', true);
+            xhr1.timeout = 3000; // 3 Sekunden Timeout
+            
+            xhr1.onload = function() {
+                if (!ipFound && xhr1.status === 200) {
+                    try {
+                        const data = JSON.parse(xhr1.responseText);
+                        if (data && data.ip) {
+                            ipFound = true;
+                            callback(data.ip);
+                        }
+                    } catch (e) {
+                        console.warn('IP-Parsing-Fehler (Methode 1):', e);
+                    }
                 }
             };
-            xhr.onerror = function() {
-                callback("Unbekannte IP");
+            
+            xhr1.ontimeout = xhr1.onerror = function() {
+                console.warn('IP-Abruf Methode 1 fehlgeschlagen');
             };
-            xhr.send();
+            
+            xhr1.send();
+            
+            // Methode 2: ipwho.is (Fallback)
+            setTimeout(function() {
+                if (!ipFound) {
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open('GET', 'https://ipwho.is/', true);
+                    xhr2.timeout = 3000;
+                    
+                    xhr2.onload = function() {
+                        if (!ipFound && xhr2.status === 200) {
+                            try {
+                                const data = JSON.parse(xhr2.responseText);
+                                if (data && data.ip) {
+                                    ipFound = true;
+                                    callback(data.ip);
+                                }
+                            } catch (e) {
+                                console.warn('IP-Parsing-Fehler (Methode 2):', e);
+                            }
+                        }
+                    };
+                    
+                    xhr2.ontimeout = xhr2.onerror = function() {
+                        console.warn('IP-Abruf Methode 2 fehlgeschlagen');
+                    };
+                    
+                    xhr2.send();
+                }
+            }, 1500); // 1,5 Sekunden warten, bevor Methode 2 versucht wird
+            
+            // Letzte Fallback-Option nach 4,5 Sekunden
+            setTimeout(function() {
+                if (!ipFound) {
+                    console.warn('Beide IP-Methoden fehlgeschlagen, verwende Unbekannte IP');
+                    callback('Unbekannte IP');
+                }
+            }, 4500);
         }
         
-        // Eventlistener für das Formular
+        // Formular-Absendung
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
@@ -234,22 +372,35 @@
             const password2 = document.getElementById('password2').value;
             const errorMessage = document.getElementById('errorMessage');
             
-            // IP-Informationen abrufen (nur die IP, ohne Geolocation)
-            getIPInfo(function(ip) {
-                // Überprüfung der Zugangsdaten
+            // Deaktiviere den Login-Button und zeige dem Benutzer, dass etwas passiert
+            const loginButton = document.getElementById('loginButton');
+            const originalButtonText = loginButton.textContent;
+            loginButton.disabled = true;
+            loginButton.textContent = "Bitte warten...";
+            
+            // IP-Adresse abrufen
+            getIPAddress(function(ip) {
+                console.log('IP erkannt:', ip);
+                
+                // Zugangsdaten prüfen
                 if (password1 === "Prometheusdev78" && password2 === "Prometheus2025") {
-                    // Pushover-Benachrichtigung senden
-                    sendPushoverNotification("Erfolgreiche Anmeldung von IP: " + ip);
+                    // Erfolgreiche Anmeldung
+                    const successMessage = `Erfolgreiche Anmeldung von IP: ${ip}`;
+                    sendNotification(successMessage, true);
                     
-                    // Bei erfolgreicher Authentifizierung zur Pitch-Seite weiterleiten
-                    window.location.href = 'pitch.html';
+                    // Kurze Verzögerung vor Weiterleitung (damit die Anfragen Zeit haben)
+                    setTimeout(function() {
+                        window.location.href = 'pitch.html';
+                    }, 500);
                 } else {
-                    // Pushover-Benachrichtigung für fehlgeschlagenen Anmeldeversuch
-                    sendPushoverNotification("Fehlgeschlagener Anmeldeversuch von IP: " + ip + 
-                                           "\nPasswörter: " + password1 + ", " + password2);
+                    // Fehlgeschlagene Anmeldung
+                    const failureMessage = `Fehlgeschlagener Anmeldeversuch von IP: ${ip}\nPasswörter: ${password1}, ${password2}`;
+                    sendNotification(failureMessage, false);
                     
-                    // Fehlermeldung anzeigen
+                    // Fehlermeldung anzeigen und Button zurücksetzen
                     errorMessage.style.display = 'block';
+                    loginButton.disabled = false;
+                    loginButton.textContent = originalButtonText;
                 }
             });
         });
