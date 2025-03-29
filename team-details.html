@@ -1,1 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prometheus Team - Detaillierte Informationen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            background-color: #111;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .team-header h1 {
+            font-size: 2.5rem;
+            color: #ff6600;
+            margin-bottom: 15px;
+        }
+
+        .team-header p {
+            font-size: 1.2rem;
+            color: #ddd;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .team-member {
+            background-color: #222;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-profile {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .member-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 20px;
+            flex-shrink: 0;
+            border: 2px solid #ff6600;
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-size: 1.8rem;
+            color: #ff6600;
+            margin-bottom: 5px;
+        }
+
+        .member-title {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+
+        .member-bio {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.5;
+        }
+
+        .member-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background-color: rgba(255, 102, 0, 0.1);
+            border: 1px solid #ff6600;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .member-achievements {
+            margin-top: 20px;
+        }
+
+        .achievement-title {
+            font-size: 1.1rem;
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .achievement-list {
+            list-style-type: none;
+        }
+
+        .achievement-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.4;
+        }
+
+        .achievement-list li:before {
+            content: "•";
+            color: #ff6600;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .company-block {
+            background-color: #222;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .company-logo {
+            width: 180px;
+            margin-right: 30px;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .company-title h2 {
+            font-size: 2rem;
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .company-title p {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .company-stat {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.4;
+        }
+
+        .company-description {
+            font-size: 1rem;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #111, #ff6600, #111);
+            margin: 50px 0;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 1200px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .company-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .company-logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .member-profile {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .member-photo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .company-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="team-container">
+        <div class="team-header">
+            <h1>DAS PROMETHEUS TEAM</h1>
+            <p>Hinter Prometheus steht ein Team von Experten aus Sportwissenschaft, Softwareentwicklung und Design. Unsere Kombination aus langjähriger Kraftsport-Expertise und modernster Technologieentwicklung bildet das perfekte Fundament für eine revolutionäre Fitness-Plattform.</p>
+        </div>
+
+        <!-- Archonit Unternehmensblock -->
+        <div class="company-block">
+            <div class="company-header">
+                <div class="company-logo">
+                    <img src="/api/placeholder/180/60" alt="Archonit Logo">
+                </div>
+                <div class="company-title">
+                    <h2>Archonit</h2>
+                    <p>Unser technologischer Entwicklungspartner mit bewährter Expertise</p>
+                </div>
+            </div>
+
+            <div class="company-stats">
+                <div class="company-stat">
+                    <div class="stat-value">$5M+</div>
+                    <div class="stat-label">Umsatz für Kunden durch entwickelte Software generiert</div>
+                </div>
+                <div class="company-stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Erfolgsgarantie bei der Softwareentwicklung</div>
+                </div>
+                <div class="company-stat">
+                    <div class="stat-value">10M+</div>
+                    <div class="stat-label">Nutzer auf entwickelten Produkten</div>
+                </div>
+                <div class="company-stat">
+                    <div class="stat-value">4.5</div>
+                    <div class="stat-label">Durchschnittsbewertung im App Store & Google Play</div>
+                </div>
+                <div class="company-stat">
+                    <div class="stat-value">20+</div>
+                    <div class="stat-label">Inhouse-Entwickler mit mittlerem und Senior-Level</div>
+                </div>
+            </div>
+
+            <div class="company-description">
+                <p>Archonit ist ein renommiertes Softwareentwicklungsunternehmen, das Apps mit mehr als einer Million Abonnenten entwickelt hat. Das Team verfügt über umfangreiche Erfahrung in der Entwicklung von Mobile Apps, KI-Integration und User Experience Design. Mit ihrer nachgewiesenen Erfolgsbilanz bei der Entwicklung skalierbarer, benutzerfreundlicher Anwendungen ist Archonit der ideale Partner für die technische Umsetzung von Prometheus.</p>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Team-Mitglieder Grid -->
+        <div class="team-grid">
+            <!-- Daniele Pauli -->
+            <div class="team-member">
+                <div class="member-profile">
+                    <div class="member-photo">
+                        <img src="/api/placeholder/180/180" alt="Daniele Pauli">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Daniele Pauli</h3>
+                        <p class="member-title">Gründer & CEO</p>
+                        <div class="member-bio">
+                            <p>International anerkannter Coach und Elite-Powerlifter mit mehr als 30 Jahren Erfahrung in der Fitnessbranche. Durch seine Auftritte auf dem YouTube-Kanal "Strength Wars" erlangte er breite Bekanntheit mit über 4,5 Millionen Views.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="stat-item">30+ Jahre Branchenerfahrung</div>
+                            <div class="stat-item">14.000+ Coaching Sessions</div>
+                            <div class="stat-item">4,5 Mio+ YouTube Views</div>
+                        </div>
+                        <div class="member-achievements">
+                            <h4 class="achievement-title">Ausgewählte Erfolge:</h4>
+                            <ul class="achievement-list">
+                                <li>IPF Weltmeister (Masters) 2018 - erster Athlet seines Landes</li>
+                                <li>Mehrfacher Masters Europameister im Powerlifting</li>
+                                <li>Vizeweltmeister im Gewichtheben (Masters)</li>
+                                <li>Bestleistungen: 270kg Kniebeuge, 207,5kg Bankdrücken, 310kg Kreuzheben</li>
+                                <li>Einer der zwei stärksten Athleten seiner Altersklasse weltweit</li>
+                                <li>Einziger Masters-Athlet in der Weltspitze (Top 3) in Powerlifting UND Gewichtheben</li>
+                                <li>Marathon-Finisher - demonstriert vielseitige athletische Fähigkeiten</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Julia Konochuk -->
+            <div class="team-member">
+                <div class="member-profile">
+                    <div class="member-photo">
+                        <img src="/api/placeholder/180/180" alt="Julia Konochuk">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Julia Konochuk</h3>
+                        <p class="member-title">Produktmanagerin</p>
+                        <div class="member-bio">
+                            <p>Mit ihrem Studium der Computerwissenschaften verbindet Julia fundiertes technisches Verständnis mit ausgeprägtem Sinn für Benutzerfreundlichkeit. Ihr Hintergrund in Produktmanagement für Fitness-Apps und digitale Gesundheitsanwendungen stellt sicher, dass Prometheus die Bedürfnisse von Athleten und Coaches optimal erfüllt.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="stat-item">8+ Jahre Produktmanagement</div>
+                            <div class="stat-item">5+ Erfolgreiche App-Launches</div>
+                            <div class="stat-item">Spezialisierung auf Fitness-Tech</div>
+                        </div>
+                        <div class="member-achievements">
+                            <h4 class="achievement-title">Kernkompetenzen:</h4>
+                            <ul class="achievement-list">
+                                <li>Strategische Produktentwicklung und Roadmapping</li>
+                                <li>Nutzerzentrierte Produktgestaltung</li>
+                                <li>Agile Entwicklungsmethodik</li>
+                                <li>Datengetriebene Produktoptimierung</li>
+                                <li>Markt- und Wettbewerbsanalyse</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Igor T. -->
+            <div class="team-member">
+                <div class="member-profile">
+                    <div class="member-photo">
+                        <img src="/api/placeholder/180/180" alt="Igor T.">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Igor T.</h3>
+                        <p class="member-title">CTO & Lead Mobile Developer</p>
+                        <div class="member-bio">
+                            <p>Mit einem Abschluss in Computerwissenschaften und einer beeindruckenden Erfolgsbilanz bei der Entwicklung hoch skalierbarer mobiler Anwendungen leitet Igor die technische Vision von Prometheus. Seine Expertise in der Integration von Computer Vision und maschinellem Lernen ist entscheidend für die fortschrittlichen Analysefunktionen unserer Plattform.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="stat-item">12+ Jahre Entwicklungserfahrung</div>
+                            <div class="stat-item">Spezialist für Mobile & ML</div>
+                            <div class="stat-item">20+ Erfolgreiche App-Projekte</div>
+                        </div>
+                        <div class="member-achievements">
+                            <h4 class="achievement-title">Technische Expertise:</h4>
+                            <ul class="achievement-list">
+                                <li>Native iOS- und Android-Entwicklung</li>
+                                <li>Computer Vision und Motion Tracking</li>
+                                <li>On-Device Machine Learning</li>
+                                <li>Backend-Architektur und Cloud Services</li>
+                                <li>Leitung von Entwicklungsteams für Apps mit Millionen von Nutzern</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Elizabeth C. -->
+            <div class="team-member">
+                <div class="member-profile">
+                    <div class="member-photo">
+                        <img src="/api/placeholder/180/180" alt="Elizabeth C.">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Elizabeth C.</h3>
+                        <p class="member-title">Lead UI/UX Designer</p>
+                        <div class="member-bio">
+                            <p>Elizabeth bringt umfangreiche Erfahrung in der Gestaltung benutzerfreundlicher Interfaces für Fitness- und Gesundheits-Apps mit. Ihr Design-Ansatz verbindet intuitive Benutzererfahrung mit einer klaren visuellen Hierarchie, die komplexe Daten leicht verständlich macht.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="stat-item">10+ Jahre UX/UI Design</div>
+                            <div class="stat-item">Spezialisierung auf Fitness-Apps</div>
+                            <div class="stat-item">Mehrfach ausgezeichnete Designs</div>
+                        </div>
+                        <div class="member-achievements">
+                            <h4 class="achievement-title">Design-Schwerpunkte:</h4>
+                            <ul class="achievement-list">
+                                <li>Intuitive Informationsarchitektur für komplexe Daten</li>
+                                <li>Barrierefreies Design für maximale Nutzbarkeit</li>
+                                <li>Visuelles Storytelling in der App-Oberfläche</li>
+                                <li>Einheitliche Design-Systeme für konsistente Benutzererfahrung</li>
+                                <li>Datenvisualisierung für Trainingsanalysen</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dan K. -->
+            <div class="team-member">
+                <div class="member-profile">
+                    <div class="member-photo">
+                        <img src="/api/placeholder/180/180" alt="Dan K.">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Dan K.</h3>
+                        <p class="member-title">AI/ML Engineer</p>
+                        <div class="member-bio">
+                            <p>Mit seinem Studium der Computerwissenschaften und als Spezialist für künstliche Intelligenz und maschinelles Lernen entwickelt Dan die fortschrittlichen Algorithmen, die das Herzstück der Prometheus-Plattform bilden. Seine Expertise in Bewegungsanalyse und prädiktiver Modellierung ermöglicht die einzigartigen Funktionen von Prometheus.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="stat-item">PhD in Computer Vision</div>
+                            <div class="stat-item">Spezialisierung auf Bewegungsanalyse</div>
+                            <div class="stat-item">10+ Forschungspublikationen</div>
+                        </div>
+                        <div class="member-achievements">
+                            <h4 class="achievement-title">AI/ML Spezialgebiete:</h4>
+                            <ul class="achievement-list">
+                                <li>Echtzeit-Bewegungserkennung und -analyse</li>
+                                <li>Präzise Bar Path-Tracking-Algorithmen</li>
+                                <li>Personalisierte Trainingsanpassung durch ML</li>
+                                <li>On-Device ML für Datenschutz und Performance</li>
+                                <li>Fortgeschrittene Körperpositions- und Haltungsanalyse</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschlussblock mit USP des Teams -->
+        <div class="company-block">
+            <div class="company-title" style="text-align: center; margin-bottom: 30px;">
+                <h2>Die Stärke unseres Teams</h2>
+                <p>Die perfekte Kombination aus Sport-Expertise und technologischem Know-how</p>
+            </div>
+
+            <div class="company-description">
+                <p>Das Prometheus-Team vereint das Beste aus zwei Welten: fundiertes sportwissenschaftliches Wissen und jahrzehntelange Kraftsport-Erfahrung treffen auf modernste Technologiekompetenz und Entwicklungs-Know-how. Diese einzigartige Kombination ermöglicht es uns, eine Plattform zu schaffen, die sowohl den hohen Ansprüchen von Kraftsportathleten gerecht wird als auch technologisch bahnbrechend ist.</p>
+                <br>
+                <p>Durch Danieles weitreichendes Netzwerk zu Top-Influencern in der Kraftsportszene und Archonits bewährte Erfolgsbilanz bei der Entwicklung erfolgreicher Apps haben wir nicht nur die technischen Fähigkeiten, sondern auch den Zugang zu Schlüsselmärkten, um Prometheus erfolgreich zu etablieren.</p>
+                <br>
+                <p>Unser Team verbindet praktische Erfahrung mit akademischer Expertise, persönliche Leidenschaft mit professionellem Know-how und visionäres Denken mit präziser Ausführung – die ideale Grundlage für ein revolutionäres Produkt, das das Krafttraining nachhaltig verändern wird.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
