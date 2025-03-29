@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prometheus Affiliate Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #111;
+      color: white;
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      width: 280px;
+      background-color: #222;
+      height: 100vh;
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+    
+    .logo-icon {
+      background-color: #ff6600;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      font-size: 24px;
+    }
+    
+    .logo-text {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      color: #ddd;
+      text-decoration: none;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+      transition: all 0.3s;
+    }
+    
+    .nav-item:hover {
+      background-color: rgba(255, 102, 0, 0.1);
+      color: #ff6600;
+    }
+    
+    .nav-item.active {
+      background-color: rgba(255, 102, 0, 0.15);
+      color: #ff6600;
+      font-weight: bold;
+    }
+    
+    .nav-icon {
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+    
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2.5rem;
+    }
+    
+    .page-content {
+      display: none;
+    }
+    
+    .page-content.active {
+      display: block;
+    }
+    
+    .page-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: white;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid #333;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-label {
+      color: #aaa;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+    }
+    
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #ff6600;
+    }
+    
+    .referral-box {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    .referral-title {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .referral-link {
+      display: flex;
+      background-color: #333;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    
+    .referral-code {
+      flex: 1;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 1rem;
+      color: #ddd;
+      border: none;
+      background: transparent;
+      outline: none;
+    }
+    
+    .copy-button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      padding: 0 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+    
+    .copy-button:hover {
+      background-color: #e65c00;
+    }
+    
+    .share-options {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .share-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #333;
+      color: #ddd;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .share-button:hover {
+      background-color: #444;
+      color: #fff;
+    }
+    
+    .share-icon {
+      margin-right: 8px;
+    }
+    
+    .success-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      border-left: 4px solid #ff6600;
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(120%);
+      transition: transform 0.3s;
+      z-index: 1000;
+    }
+    
+    .success-message.show {
+      transform: translateX(0);
+    }
+    
+    /* Zusätzliche Styles für Subsites */
+    
+    /* Clients Subsite */
+    .clients-container {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    .clients-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #ddd;
+    }
+    
+    .clients-table th {
+      text-align: left;
+      padding: 1rem;
+      background-color: #333;
+      font-weight: normal;
+      color: #aaa;
+    }
+    
+    .clients-table th:first-child {
+      border-top-left-radius: 8px;
+    }
+    
+    .clients-table th:last-child {
+      border-top-right-radius: 8px;
+      text-align: right;
+    }
+    
+    .clients-table td {
+      padding: 1rem;
+      border-top: 1px solid #333;
+    }
+    
+    .clients-table td:last-child {
+      text-align: right;
+    }
+    
+    .client-status {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .status-active {
+      background-color: rgba(39, 174, 96, 0.2);
+      color: #27ae60;
+    }
+    
+    .status-pending {
+      background-color: rgba(241, 196, 15, 0.2);
+      color: #f1c40f;
+    }
+    
+    .status-inactive {
+      background-color: rgba(192, 57, 43, 0.2);
+      color: #c0392b;
+    }
+    
+    /* Statistiken Subsite */
+    .chart-container {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+      position: relative;
+      height: 300px;
+    }
+    
+    .chart-title {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .tabs-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab-button {
+      background-color: #333;
+      color: #aaa;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .tab-button.active {
+      background-color: #ff6600;
+      color: white;
+    }
+    
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .summary-item {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .summary-label {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff6600;
+    }
+    
+    .summary-trend {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .trend-up {
+      color: #27ae60;
+    }
+    
+    .trend-down {
+      color: #c0392b;
+    }
+    
+    /* Auszahlungen Subsite */
+    .transactions-container {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #333;
+    }
+    
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+    
+    .transaction-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .transaction-date {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .transaction-desc {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+    
+    .transaction-amount {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff6600;
+    }
+    
+    .payout-request {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+    }
+    
+    .payout-request:hover {
+      background-color: #e65c00;
+    }
+    
+    .payout-threshold {
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 0.7rem;
+      font-style: italic;
+    }
+    
+    /* Einstellungen Subsite */
+    .settings-container {
+      background-color: #222;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+    
+    .settings-section {
+      margin-bottom: 2rem;
+    }
+    
+    .settings-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .settings-title {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #333;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-input {
+      width: 100%;
+      background-color: #333;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.3);
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .toggle-label {
+      color: #ddd;
+      font-size: 1rem;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #333;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: #ff6600;
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+    
+    .save-button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+    }
+    
+    .save-button:hover {
+      background-color: #e65c00;
+    }
+    
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 80px;
+        padding: 1.5rem 0.8rem;
+      }
+      
+      .logo {
+        justify-content: center;
+        margin-bottom: 2rem;
+      }
+      
+      .logo-text {
+        display: none;
+      }
+      
+      .logo-icon {
+        margin-right: 0;
+      }
+      
+      .nav-item {
+        justify-content: center;
+        padding: 0.8rem;
+      }
+      
+      .nav-icon {
+        margin-right: 0;
+        font-size: 1.4rem;
+      }
+      
+      .nav-text {
+        display: none;
+      }
+      
+      .main {
+        margin-left: 80px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-grid, .stats-summary {
+        grid-template-columns: 1fr;
+      }
+      
+      .share-options {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">PROMETHEUS</div>
+    </div>
+    
+    <div class="nav-links">
+      <a href="#" class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="clients">
+        <span class="nav-icon">👥</span>
+        <span class="nav-text">Klienten</span>
+      </a>
+      <a href="#" class="nav-item" data-page="stats">
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">Statistiken</span>
+      </a>
+      <a href="#" class="nav-item" data-page="payouts">
+        <span class="nav-icon">💰</span>
+        <span class="nav-text">Auszahlungen</span>
+      </a>
+      <a href="#" class="nav-item" data-page="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-text">Einstellungen</span>
+      </a>
+    </div>
+  </div>
+  
+  <div class="main">
+    <!-- Dashboard Page -->
+    <div class="page-content active" id="dashboard-page">
+      <h1 class="page-title">Affiliate Dashboard</h1>
+      
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-label">Empfohlene Nutzer</div>
+          <div class="stat-value">48</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aktive Abonnements</div>
+          <div class="stat-value">39</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ausstehende Auszahlung</div>
+          <div class="stat-value">156 CHF</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Gesamtverdienst</div>
+          <div class="stat-value">624 CHF</div>
+        </div>
+      </div>
+      
+      <div class="referral-box">
+        <h2 class="referral-title">Dein Affiliate-Link</h2>
+        <div class="referral-link">
+          <input type="text" class="referral-code" value="https://prometheus-fitness.com/signup?ref=alex_fit" readonly>
+          <button class="copy-button" id="copyButton">Kopieren</button>
+        </div>
+        
+        <div class="share-options">
+          <button class="share-button">
+            <span class="share-icon">📱</span> QR-Code generieren
+          </button>
+          <button class="share-button">
+            <span class="share-icon">📧</span> Per E-Mail teilen
+          </button>
+          <button class="share-button">
+            <span class="share-icon">📲</span> Auf Social Media teilen
+          </button>
+        </div>
+      </div>
+      
+      <div class="referral-box">
+        <h2 class="referral-title">Letzte Aktivitäten</h2>
+        <div class="clients-table" style="max-height: 300px; overflow-y: auto;">
+          <table class="clients-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Ereignis</th>
+                <th>Nutzer</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>25.03.2025</td>
+                <td>Neue Registrierung</td>
+                <td>max.mueller@example.com</td>
+                <td><span class="client-status status-active">Aktiv</span></td>
+              </tr>
+              <tr>
+                <td>23.03.2025</td>
+                <td>Abo verlängert</td>
+                <td>lisa.schmidt@example.com</td>
+                <td><span class="client-status status-active">Aktiv</span></td>
+              </tr>
+              <tr>
+                <td>20.03.2025</td>
+                <td>Testphase begonnen</td>
+                <td>thomas.weber@example.com</td>
+                <td><span class="client-status status-pending">Test</span></td>
+              </tr>
+              <tr>
+                <td>18.03.2025</td>
+                <td>Abo gekündigt</td>
+                <td>sandra.meyer@example.com</td>
+                <td><span class="client-status status-inactive">Inaktiv</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Clients Page -->
+    <div class="page-content" id="clients-page">
+      <h1 class="page-title">Deine Klienten</h1>
+      
+      <div class="clients-container">
+        <table class="clients-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>E-Mail</th>
+              <th>Beitrittsdatum</th>
+              <th>Status</th>
+              <th>Verdienst</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Max Müller</td>
+              <td>max.mueller@example.com</td>
+              <td>25.03.2025</td>
+              <td><span class="client-status status-active">Aktiv</span></td>
+              <td>4 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Lisa Schmidt</td>
+              <td>lisa.schmidt@example.com</td>
+              <td>15.02.2025</td>
+              <td><span class="client-status status-active">Aktiv</span></td>
+              <td>4 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Thomas Weber</td>
+              <td>thomas.weber@example.com</td>
+              <td>20.03.2025</td>
+              <td><span class="client-status status-pending">Test</span></td>
+              <td>0 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Sandra Meyer</td>
+              <td>sandra.meyer@example.com</td>
+              <td>10.01.2025</td>
+              <td><span class="client-status status-inactive">Inaktiv</span></td>
+              <td>0 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Michael Wagner</td>
+              <td>michael.wagner@example.com</td>
+              <td>05.03.2025</td>
+              <td><span class="client-status status-active">Aktiv</span></td>
+              <td>4 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Julia Becker</td>
+              <td>julia.becker@example.com</td>
+              <td>18.02.2025</td>
+              <td><span class="client-status status-active">Aktiv</span></td>
+              <td>4 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Daniel Hoffmann</td>
+              <td>daniel.hoffmann@example.com</td>
+              <td>28.02.2025</td>
+              <td><span class="client-status status-active">Aktiv</span></td>
+              <td>4 CHF/Monat</td>
+            </tr>
+            <tr>
+              <td>Laura Fischer</td>
+              <td>laura.fischer@example.com</td>
+              <td>12.03.2025</td>
+              <td><span class="client-status status-pending">Test</span></td>
+              <td>0 CHF/Monat</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Stats Page -->
+    <div class="page-content" id="stats-page">
+      <h1 class="page-title">Statistiken & Analysen</h1>
+      
+      <div class="tabs-container">
+        <button class="tab-button active">Monat</button>
+        <button class="tab-button">Quartal</button>
+        <button class="tab-button">Jahr</button>
+        <button class="tab-button">Gesamt</button>
+      </div>
+      
+      <div class="stats-summary">
+        <div class="summary-item">
+          <div class="summary-label">Conversion Rate</div>
+          <div class="summary-value">12.4%</div>
+          <div class="summary-trend trend-up">↑ 2.1% zum Vormonat</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Durchschn. Behaltezeit</div>
+          <div class="summary-value">8.7 Monate</div>
+          <div class="summary-trend trend-up">↑ 0.5 zum Vormonat</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Monatlicher Umsatz</div>
+          <div class="summary-value">156 CHF</div>
+          <div class="summary-trend trend-up">↑ 12% zum Vormonat</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Abbruchrate</div>
+          <div class="summary-value">4.2%</div>
+          <div class="summary-trend trend-down">↓ 1.8% zum Vormonat</div>
+        </div>
+      </div>
+      
+      <div class="chart-container">
+        <h2 class="chart-title">Empfehlungen & Umsatz über Zeit</h2>
+        <!-- Platzhalter für Chart -->
+        <div style="position: absolute; top: 50%; left: 0; right: 0; text-align: center; transform: translateY(-50%); color: #aaa;">
+          Chart: Monatliche Empfehlungen und Umsatz
+        </div>
+      </div>
+      
+      <div class="chart-container">
+        <h2 class="chart-title">Conversion-Trichter</h2>
+        <!-- Platzhalter für Chart -->
+        <div style="position: absolute; top: 50%; left: 0; right: 0; text-align: center; transform: translateY(-50%); color: #aaa;">
+          Chart: Conversion-Trichter vom Link-Klick zur Conversion
+        </div>
+      </div>
+    </div>
+    
+    <!-- Payouts Page -->
+    <div class="page-content" id="payouts-page">
+      <h1 class="page-title">Auszahlungen</h1>
+      
+      <div class="referral-box">
+        <h2 class="referral-title">Ausstehender Betrag</h2>
+        <div style="font-size: 3rem; font-weight: bold; color: #ff6600; margin: 1.5rem 0;">156 CHF</div>
+        <button class="payout-request">Auszahlung anfordern</button>
+        <p class="payout-threshold">Minimaler Auszahlungsbetrag: 50 CHF</p>
+      </div>
+      
+      <div class="transactions-container">
+        <h2 class="referral-title">Transaktionshistorie</h2>
+        
+        <div class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-date">28. Februar 2025</div>
+            <div class="transaction-desc">Auszahlung auf Bankkonto</div>
+          </div>
+          <div class="transaction-amount">120 CHF</div>
+        </div>
+        
+        <div class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-date">31. Januar 2025</div>
+            <div class="transaction-desc">Auszahlung auf Bankkonto</div>
+          </div>
+          <div class="transaction-amount">96 CHF</div>
+        </div>
+        
+        <div class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-date">31. Dezember 2024</div>
+            <div class="transaction-desc">Auszahlung auf Bankkonto</div>
+          </div>
+          <div class="transaction-amount">88 CHF</div>
+        </div>
+        
+        <div class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-date">30. November 2024</div>
+            <div class="transaction-desc">Auszahlung auf Bankkonto</div>
+          </div>
+          <div class="transaction-amount">76 CHF</div>
+        </div>
+        
+        <div class="transaction-item">
+          <div class="transaction-info">
+            <div class="transaction-date">31. Oktober 2024</div>
+            <div class="transaction-desc">Auszahlung auf Bankkonto</div>
+          </div>
+          <div class="transaction-amount">68 CHF</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Settings Page -->
+    <div class="page-content" id="settings-page">
+      <h1 class="page-title">Einstellungen</h1>
+      
+      <div class="settings-container">
+        <div class="settings-section">
+          <h2 class="settings-title">Persönliche Informationen</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-input" value="Alex Fitness">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">E-Mail-Adresse</label>
+            <input type="email" class="form-input" value="alex@fitness-coach.com">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Telefonnummer</label>
+            <input type="tel" class="form-input" value="+41 76 123 45 67">
+          </div>
+        </div>
+        
+        <div class="settings-section">
+          <h2 class="settings-title">Auszahlungsdetails</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Bank</label>
+            <input type="text" class="form-input" value="Schweizer Kantonalbank">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">IBAN</label>
+            <input type="text" class="form-input" value="CH93 0076 2011 6238 5295 7">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">BIC/SWIFT</label>
+            <input type="text" class="form-input" value="POFICHBEXXX">
+          </div>
+        </div>
+        
+        <div class="settings-section">
+          <h2 class="settings-title">Benachrichtigungen</h2>
+          
+          <div class="toggle-container">
+            <span class="toggle-label">E-Mail bei neuer Empfehlung</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-container">
+            <span class="toggle-label">E-Mail bei Auszahlung</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-container">
+            <span class="toggle-label">Monatliche Zusammenfassung</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
+          <div class="toggle-container">
+            <span class="toggle-label">Marketing-Updates</span>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        
+        <button class="save-button">Änderungen speichern</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="success-message" id="successMessage">
+    Link wurde in die Zwischenablage kopiert!
+  </div>
+  
+  <script>
+    // Link kopieren
+    document.getElementById('copyButton').addEventListener('click', function() {
+      const referralCode = document.querySelector('.referral-code');
+      referralCode.select();
+      document.execCommand('copy');
+      
+      const successMessage = document.getElementById('successMessage');
+      successMessage.classList.add('show');
+      
+      setTimeout(function() {
+        successMessage.classList.remove('show');
+      }, 3000);
+    });
+    
+    // Navigation zwischen Seiten
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Aktiven Link umschalten
+        document.querySelectorAll('.nav-item').forEach(navItem => {
+          navItem.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Aktive Seite umschalten
+        const targetPage = this.getAttribute('data-page');
+        document.querySelectorAll('.page-content').forEach(page => {
+          page.classList.remove('active');
+        });
+        document.getElementById(`${targetPage}-page`).classList.add('active');
+      });
+    });
+    
+    // Tab-Buttons
+    document.querySelectorAll('.tab-button').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
