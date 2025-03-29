@@ -18,6 +18,98 @@
             min-height: 100vh;
         }
 
+        /* Allgemeine Styles für "Mehr Infos" Buttons */
+    .more-info-button {
+        background-color: rgba(255, 102, 0, 0.15);
+        color: #ff6600;
+        border: 1px solid #ff6600;
+        border-radius: 6px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 15px;
+    }
+
+    .more-info-button:hover {
+        background-color: rgba(255, 102, 0, 0.25);
+    }
+
+    .more-info-icon {
+        margin-right: 8px;
+    }
+
+    /* Modal/Popup für Subsites */
+    .subsite-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .subsite-content {
+        background-color: #111;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 1200px;
+        height: 85vh;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        position: relative;
+    }
+
+    .subsite-header {
+        background-color: #222;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #333;
+    }
+
+    .subsite-title {
+        color: #ff6600;
+        font-size: 1.4rem;
+        font-weight: bold;
+    }
+
+    .close-subsite {
+        background-color: rgba(255, 102, 0, 0.15);
+        color: #ff6600;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .close-subsite:hover {
+        background-color: rgba(255, 102, 0, 0.3);
+    }
+
+    .subsite-body {
+        padding: 0;
+        height: calc(100% - 63px);
+        overflow: auto;
+    }
+
+    .subsite-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
         .pitch-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -1082,63 +1174,246 @@
             </div>
         </div>
 
-        <!-- Slide 5: MARKETING & VERTRIEB -->
-        <div class="slide" id="slide5">
-            <h1 class="slide-title">MARKETING & VERTRIEB</h1>
+<!-- Slide 5: MARKETING & VERTRIEB (mit Affiliate-Button) -->
+<div class="slide" id="slide5">
+    <h1 class="slide-title">MARKETING & VERTRIEB</h1>
 
-            <div class="term-card">
-                <div class="term-icon">📊</div>
-                <div class="term-content">
-                    <div class="term-value">CAC-Vergleich: 82% niedrigere Kundenakquisitionskosten</div>
-                    <div class="stat-info">Traditionelle Akquise: 22 CHF pro Kunde vs. Prometheus Royalty: 4 CHF pro Kunde</div>
-                </div>
+    <!-- Umfassende Kennzahlentabelle mit allen relevanten Daten in 2 Spalten -->
+    <div style="margin-top: 25px;">
+        <h3 style="color: #ff6600; font-size: 1.3rem; margin-bottom: 15px;">Marketingkennzahlen & Akquisitionskosten</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <!-- Linke Spalte -->
+            <div>
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 10px 15px; background-color: #222; border: 1px solid #444; border-top-left-radius: 8px;">Kennzahl</th>
+                            <th style="text-align: right; padding: 10px 15px; background-color: #222; border: 1px solid #444; border-top-right-radius: 8px;">Wert</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Budget & CAC -->
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; background-color: rgba(255, 102, 0, 0.05);"><strong>BUDGET & AKQUISE</strong></td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; background-color: rgba(255, 102, 0, 0.05);"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Monatliches Social Ad Budget</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">5'000 CHF</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø Kosten pro Klick (CPC)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">0.70 CHF</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø CAC über Ads</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">22 CHF</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø CAC über Influencer-Royalty</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none;">4 CHF</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">CAC-Reduktion durch Royalty-Modell</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none;">82%</td>
+                        </tr>
+
+                        <!-- WEB-TO-APP FUNNEL -->
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none; background-color: rgba(255, 102, 0, 0.05);"><strong>WEB-TO-APP FUNNEL</strong></td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; border-top: none; background-color: rgba(255, 102, 0, 0.05);"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Awareness (CTR auf Ads)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">3.2%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Interest (Ø Verweildauer Landingpage)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">2:30 Min.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Desire (CTA-Konversion)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">42%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Action (Web-to-App Konversion)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none;">28%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none; border-bottom-left-radius: 8px;">App Retention nach 30 Tagen</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none; border-bottom-right-radius: 8px;">62%</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="two-columns" style="margin-top: 30px;">
-                <div class="column">
-                    <h3 class="column-title">Multi-Influencer-Strategie</h3>
-                    <ul class="points-list">
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Gleichzeitige Promotion durch Fitness-Influencer</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>4 CHF Royalty-Modell auch für Influencer</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Passive Einkommensquelle für Content-Creator</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Authentische Empfehlungen statt teurer Werbung</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <h3 class="column-title">Coach-Netzwerk-Effekt</h3>
-                    <ul class="points-list">
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>1 Jahr kostenloser Vollzugang für alle Coaches</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Coaches bringen eigene Klienten und Netzwerke</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Win-Win durch passives Einkommen für Coaches</span>
-                        </li>
-                        <li>
-                            <div class="check-icon">✓</div>
-                            <span>Exponentielles Wachstum durch Multiplikatoren</span>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Rechte Spalte -->
+            <div>
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 10px 15px; background-color: #222; border: 1px solid #444; border-top-left-radius: 8px;">Kennzahl</th>
+                            <th style="text-align: right; padding: 10px 15px; background-color: #222; border: 1px solid #444; border-top-right-radius: 8px;">Wert</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Influencer-Strategie -->
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; background-color: rgba(255, 102, 0, 0.05);"><strong>INFLUENCER-STRATEGIE</strong></td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; background-color: rgba(255, 102, 0, 0.05);"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Zielgruppe Follower-Bereich</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">20k-1M</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø Conversion (Follower zu App-User)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">1.8%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø Neue Nutzer pro Influencer (25k Follower)</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">~180</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Fixkosten pro Influencer</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none;">0 CHF</td>
+                        </tr>
+
+                        <!-- Coach-Netzwerk -->
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none; background-color: rgba(255, 102, 0, 0.05);"><strong>COACH-NETZWERK</strong></td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; border-top: none; background-color: rgba(255, 102, 0, 0.05);"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø App-Nutzer pro Coach</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">12</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">App-Abonnement für Coach-Kunden</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; color: #ff6600; border-top: none;">19.99 CHF/Monat</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Royalty-Zahlung pro Kunde an Coach</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">4 CHF/Monat</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none;">Ø Monatlicher Umsatz pro Coach</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none;">239.88 CHF</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 15px; border: 1px solid #333; border-right: none; border-top: none; border-bottom-left-radius: 8px;">Ø Monatliche Royalty-Kosten pro Coach</td>
+                            <td style="padding: 8px 15px; border: 1px solid #333; text-align: right; font-weight: bold; border-top: none; border-bottom-right-radius: 8px;">48 CHF</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+
+    <!-- Wachstumsstrategien - Visuelle Box-Darstellung -->
+    <div style="margin-top: 25px;">
+        <h3 style="color: #ff6600; font-size: 1.3rem; margin-bottom: 15px;">Marketingstrategien</h3>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+            <!-- Social Media Strategie -->
+            <div style="background-color: #222; border-radius: 10px; padding: 20px; height: 100%;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="background-color: #ff6600; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px;">📱</div>
+                    <h3 style="font-size: 1.2rem; color: white;">Social Media Ads</h3>
+                </div>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Zielgenaue Werbung auf Instagram, TikTok und Facebook</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Problem-basierte Content-Strategie statt reiner Produktwerbung</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Video-Demonstrationen von Problemlösungen durch die App</span>
+                    </li>
+                    <li style="color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>~227 neue Nutzer pro Monat bei 5'000 CHF Budget</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Influencer Marketing -->
+            <div style="background-color: #222; border-radius: 10px; padding: 20px; height: 100%;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="background-color: #ff6600; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px;">🌟</div>
+                    <h3 style="font-size: 1.2rem; color: white;">Influencer Royalty</h3>
+                </div>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Influencer mit 20k-1M Followern und hohem Engagement</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Keine Vorabzahlung, sondern 4 CHF Royalty pro gewonnenem Nutzer</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Authentische Empfehlungen statt bezahlter Werbung</span>
+                    </li>
+                    <li style="color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>~180 neue Nutzer pro Influencer bei 25k Followern</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Coach-Netzwerk & Affiliate -->
+            <div style="background-color: #222; border-radius: 10px; padding: 20px; height: 100%;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="background-color: #ff6600; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px;">👥</div>
+                    <h3 style="font-size: 1.2rem; color: white;">Coach-Netzwerk & Affiliate</h3>
+                </div>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>1 Jahr kostenlose Coach-Software für aktive Trainer</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Coaches erhalten 4 CHF pro Klient als passives Einkommen</span>
+                    </li>
+                    <li style="margin-bottom: 10px; color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Durchschnittlich 12 App-Nutzer pro Coach (19.99 CHF/Monat)</span>
+                    </li>
+                    <li style="color: #ddd; font-size: 0.95rem; display: flex; align-items: flex-start;">
+                        <span style="color: #ff6600; margin-right: 10px;">•</span>
+                        <span>Vertrauensbasiertes Wachstum mit hoher Retention-Rate</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- "Mehr Infos" Button für das Affiliate-Dashboard -->
+    <div class="more-info-button-container" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+        <button class="more-info-button" onclick="openSubsite('affiliate-dashboard')">
+            <span class="more-info-icon">ℹ️</span> Affiliate-Dashboard anzeigen
+        </button>
+    </div>
+
+    <!-- Kernstrategie - prägnante Zusammenfassung nach Kawasaki -->
+    <div style="margin-top: 25px; background-color: rgba(255, 102, 0, 0.08); border-radius: 10px; padding: 15px; display: flex; align-items: center; border: 1px solid #ff6600;">
+        <div style="background-color: #ff6600; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px;">🧠</div>
+        <div>
+            <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 5px;">Kernstrategie: Relevanz > Werbung</div>
+            <div style="color: #ddd; font-size: 0.95rem;">
+                Wir verkaufen keine App, sondern <strong>Lösungen für echte Probleme</strong>. Durch unser einzigartiges Royalty-Modell sparen wir 82% der Akquisitionskosten und schaffen ein skalierbares Wachstum mit starker Kundenbindung, da alle Beteiligten – Influencer, Coaches und Nutzer – vom Erfolg des Ökosystems profitieren.
+            </div>
+        </div>
+    </div>
+</div>
 
         <!-- Slide 6: WETTBEWERB -->
         <div class="slide" id="slide6">
@@ -1641,7 +1916,7 @@
                 </div>
 
                 <div style="margin-top: 40px;">
-                    <p style="font-size: 1.1rem; color: #ddd; margin-bottom: 20px;">Mehr als nur Kapital suche ich einen strategischen Visionär, der an die Zukunft des intelligenten Coachings glaubt und mit seiner Erfahrung zum Erfolg dieses vielversprechenden Projekts beitragen möchte. Als strategischer Partner erhältst du nicht nur Einblick in unsere Entwicklung durch monatliche Updates, sondern wirst aktiv durch die Integration in unseren Slack-Development-Chat und die Teilnahme an ausgewählten Team-Calls in den Fortschritt eingebunden.</p>
+                    <p style="font-size: 1.1rem; color: #ddd; margin-bottom: 20px;">Mehr als nur Kapital suche ich einen strategischen Mentor, der an die Zukunft des intelligenten Coachings glaubt und mit seiner Erfahrung zum Erfolg dieses vielversprechenden Projekts beitragen möchte. Als strategischer Partner erhältst du nicht nur Einblick in unsere Entwicklung durch monatliche Updates, sondern wirst aktiv durch die Integration in unseren Slack-Development-Chat und die Teilnahme an ausgewählten Team-Calls in den Fortschritt eingebunden.</p>
                 </div>
 
                 <p class="quote-closing">
@@ -1720,5 +1995,148 @@
             showSlide(currentSlideIndex);
         });
     </script>
+
+         // Funktion zur Verwaltung von Subsites/Detail-Ansichten
+    document.addEventListener('DOMContentLoaded', function() {
+        // Buttons erstellen und Event-Listener hinzufügen
+        setupSubsiteButtons();
+
+        // Schließen-Button-Funktion
+        document.querySelectorAll('.close-subsite').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.subsite-modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            });
+        });
+
+        // Schließen beim Klick außerhalb des Inhalts
+        document.querySelectorAll('.subsite-modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+        // ESC-Taste zum Schließen
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.subsite-modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+    });
+
+    // Funktion zum Einrichten der "Mehr Infos" Buttons
+    function setupSubsiteButtons() {
+        // Affiliate-Dashboard Button für die Marketing-Slide
+        const marketingSlide = document.getElementById('slide5');
+        if (marketingSlide) {
+            const affiliateButton = createMoreInfoButton('Affiliate-Dashboard anzeigen', 'affiliate-dashboard');
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.textAlign = 'center';
+            buttonContainer.style.marginTop = '20px';
+            buttonContainer.appendChild(affiliateButton);
+
+            // Button an einer geeigneten Stelle in der Marketing-Slide einfügen
+            const targetElement = marketingSlide.querySelector('.more-info-button-container') ||
+                                  marketingSlide.querySelector('[style*="margin-top: 25px"]') ||
+                                  marketingSlide.lastElementChild;
+
+            if (targetElement) {
+                targetElement.parentNode.insertBefore(buttonContainer, targetElement.nextSibling);
+            } else {
+                marketingSlide.appendChild(buttonContainer);
+            }
+        }
+
+        // App-Features Button für die App-Slide
+        const appSlide = document.getElementById('slideApp');
+        if (appSlide) {
+            const featuresButton = createMoreInfoButton('Detaillierte Features ansehen', 'app-features');
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.textAlign = 'center';
+            buttonContainer.style.marginTop = '20px';
+            buttonContainer.appendChild(featuresButton);
+            appSlide.appendChild(buttonContainer);
+        }
+
+        // Technik-Details Button für die Technologie-Slide
+        const techSlide = document.getElementById('slide4');
+        if (techSlide) {
+            const techButton = createMoreInfoButton('Technische Architektur anzeigen', 'tech-architecture');
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.textAlign = 'center';
+            buttonContainer.style.marginTop = '20px';
+            buttonContainer.appendChild(techButton);
+            techSlide.appendChild(buttonContainer);
+        }
+    }
+
+    // Hilfsfunktion zum Erstellen eines "Mehr Infos" Buttons
+    function createMoreInfoButton(text, targetId) {
+        const button = document.createElement('button');
+        button.className = 'more-info-button';
+        button.innerHTML = `<span class="more-info-icon">ℹ️</span> ${text}`;
+
+        button.addEventListener('click', function() {
+            openSubsite(targetId);
+        });
+
+        return button;
+    }
+
+    // Funktion zum Öffnen einer Subsite
+    function openSubsite(subsiteId) {
+        const modal = document.getElementById(`modal-${subsiteId}`);
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+</script>
+
+<!-- Modal-Container für Subsites/Detail-Ansichten -->
+<!-- Diese werden dynamisch mit den entsprechenden Inhalten gefüllt -->
+
+<!-- 1. Affiliate-Dashboard Modal -->
+<div id="modal-affiliate-dashboard" class="subsite-modal">
+    <div class="subsite-content">
+        <div class="subsite-header">
+            <div class="subsite-title">Prometheus Affiliate Dashboard</div>
+            <button class="close-subsite">✕</button>
+        </div>
+        <div class="subsite-body">
+            <iframe class="subsite-iframe" src="affiliate-dashboard.html"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- 2. App-Features Modal -->
+<div id="modal-app-features" class="subsite-modal">
+    <div class="subsite-content">
+        <div class="subsite-header">
+            <div class="subsite-title">Detaillierte App-Features</div>
+            <button class="close-subsite">✕</button>
+        </div>
+        <div class="subsite-body">
+            <iframe class="subsite-iframe" src="app-features.html"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Technische Architektur Modal -->
+<div id="modal-tech-architecture" class="subsite-modal">
+    <div class="subsite-content">
+        <div class="subsite-header">
+            <div class="subsite-title">Technische Architektur</div>
+            <button class="close-subsite">✕</button>
+        </div>
+        <div class="subsite-body">
+            <iframe class="subsite-iframe" src="tech-architecture.html"></iframe>
+        </div>
+    </div>
+</div>
 </body>
 </html>
