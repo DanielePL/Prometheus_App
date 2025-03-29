@@ -1928,72 +1928,117 @@
 
     <script>
         // Sehr einfacher, robuster Code zur Navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Navigationsbuttons
-            var prevBtn = document.getElementById('prevBtn');
-            var nextBtn = document.getElementById('nextBtn');
-            var counter = document.getElementById('slideCounter');
+document.addEventListener('DOMContentLoaded', function() {
+    // Navigationsbuttons
+    var prevBtn = document.getElementById('prevBtn');
+    var nextBtn = document.getElementById('nextBtn');
+    var counter = document.getElementById('slideCounter');
 
-            // Alle Slides finden
-            var slides = document.querySelectorAll('.slide');
-            var currentSlideIndex = 0;
-            var totalSlides = slides.length;
+    // Alle Slides finden
+    var slides = document.querySelectorAll('.slide');
+    var currentSlideIndex = 0;
+    var totalSlides = slides.length;
 
-            // Funktion, um aktuellen Slide anzuzeigen und andere zu verstecken
-            function showSlide(index) {
-                // Alle Slides verstecken
-                for (var i = 0; i < slides.length; i++) {
-                    slides[i].classList.remove('active');
-                }
+    // Funktion, um aktuellen Slide anzuzeigen und andere zu verstecken
+    function showSlide(index) {
+        // Alle Slides verstecken
+        for (var i = 0; i < slides.length; i++) {
+            slides[i].classList.remove('active');
+        }
 
-                // Aktuellen Slide anzeigen
-                slides[index].classList.add('active');
+        // Aktuellen Slide anzeigen
+        slides[index].classList.add('active');
 
-                // Counter aktualisieren
-                counter.textContent = (index + 1) + ' / ' + totalSlides;
+        // Counter aktualisieren
+        counter.textContent = (index + 1) + ' / ' + totalSlides;
 
-                // Zurück-Button deaktivieren, wenn erster Slide
-                prevBtn.disabled = index === 0;
-                prevBtn.style.opacity = index === 0 ? '0.5' : '1';
+        // Zurück-Button deaktivieren, wenn erster Slide
+        prevBtn.disabled = index === 0;
+        prevBtn.style.opacity = index === 0 ? '0.5' : '1';
 
-                // Weiter-Button deaktivieren, wenn letzter Slide
-                nextBtn.disabled = index === totalSlides - 1;
-                nextBtn.style.opacity = index === totalSlides - 1 ? '0.5' : '1';
-            }
+        // Weiter-Button deaktivieren, wenn letzter Slide
+        nextBtn.disabled = index === totalSlides - 1;
+        nextBtn.style.opacity = index === totalSlides - 1 ? '0.5' : '1';
+    }
 
-            // Event-Listener für Weiter-Button
-            nextBtn.addEventListener('click', function() {
-                if (currentSlideIndex < totalSlides - 1) {
-                    currentSlideIndex++;
-                    showSlide(currentSlideIndex);
-                }
-            });
-
-            // Event-Listener für Zurück-Button
-            prevBtn.addEventListener('click', function() {
-                if (currentSlideIndex > 0) {
-                    currentSlideIndex--;
-                    showSlide(currentSlideIndex);
-                }
-            });
-
-            // Tastaturnavigation
-            document.addEventListener('keydown', function(e) {
-                // Rechte Pfeiltaste
-                if (e.key === 'ArrowRight' && currentSlideIndex < totalSlides - 1) {
-                    currentSlideIndex++;
-                    showSlide(currentSlideIndex);
-                }
-                // Linke Pfeiltaste
-                else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
-                    currentSlideIndex--;
-                    showSlide(currentSlideIndex);
-                }
-            });
-
-            // Initialisierung
+    // Event-Listener für Weiter-Button
+    nextBtn.addEventListener('click', function() {
+        if (currentSlideIndex < totalSlides - 1) {
+            currentSlideIndex++;
             showSlide(currentSlideIndex);
+        }
+    });
+
+    // Event-Listener für Zurück-Button
+    prevBtn.addEventListener('click', function() {
+        if (currentSlideIndex > 0) {
+            currentSlideIndex--;
+            showSlide(currentSlideIndex);
+        }
+    });
+
+    // Tastaturnavigation
+    document.addEventListener('keydown', function(e) {
+        // Rechte Pfeiltaste
+        if (e.key === 'ArrowRight' && currentSlideIndex < totalSlides - 1) {
+            currentSlideIndex++;
+            showSlide(currentSlideIndex);
+        }
+        // Linke Pfeiltaste
+        else if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
+            currentSlideIndex--;
+            showSlide(currentSlideIndex);
+        }
+    });
+
+    // Initialisierung
+    showSlide(currentSlideIndex);
+
+    // Affiliate Button Event-Listener hinzufügen
+    const affiliateButton = document.querySelector('.more-info-button');
+    if (affiliateButton) {
+        affiliateButton.addEventListener('click', function() {
+            openSubsite('affiliate-dashboard');
         });
+    }
+
+    // Schließen-Button-Funktion für Subsites
+    document.querySelectorAll('.close-subsite').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.subsite-modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        });
+    });
+
+    // Schließen beim Klick außerhalb des Inhalts
+    document.querySelectorAll('.subsite-modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+
+    // ESC-Taste zum Schließen
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.subsite-modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+    });
+});
+
+// Funktion zum Öffnen einer Subsite
+function openSubsite(subsiteId) {
+    const modal = document.getElementById(`modal-${subsiteId}`);
+    if (modal) {
+        modal.style.display = 'flex';
+    } else {
+        console.error(`Modal mit ID modal-${subsiteId} nicht gefunden`);
+    }
+}
     </script>
 
         <script>
@@ -2033,7 +2078,7 @@
 
     // Funktion zum Einrichten der "Mehr Infos" Buttons
     function setupSubsiteButtons()
-    
+
         // Affiliate-Dashboard Button für die Marketing-Slide
         const marketingSlide = document.getElementById('slide5');
         if (marketingSlide) {
@@ -2096,6 +2141,8 @@
         const modal = document.getElementById(`modal-${subsiteId}`);
         if (modal) {
             modal.style.display = 'flex';
+        } else {
+        console.error(`Modal with ID modal-${subsiteId} not found`);
         }
     }
 </script>
